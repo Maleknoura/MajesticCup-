@@ -2,22 +2,23 @@ package org.wora.majesticcup.entity;
 
 
 import lombok.*;
+import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.List;
 
 
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
-@Document(collection = "competitions")
+@Document(collection = "competition")
 public class Competition {
     @Id
     private String id;
     private String name;
     private int numberOfTeams;
-    private List<String> teams;
+    private List<ObjectId> teamIds;
     private int currentRound;
-    private List<String> rounds;
+    private List<ObjectId> roundIds;
 }

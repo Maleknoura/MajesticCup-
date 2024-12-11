@@ -1,0 +1,13 @@
+spring:
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/majestic_cup
+      database: majestic_cup
+      authentication-database: admin
+  auto-index-creation: true
+logging:
+  level:
+    org.springframework.security: DEBUG
+
+
+
