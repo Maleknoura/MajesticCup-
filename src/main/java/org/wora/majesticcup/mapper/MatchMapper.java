@@ -4,6 +4,7 @@ package org.wora.majesticcup.mapper;
 import org.bson.types.ObjectId;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 import org.mapstruct.Named;
 import org.wora.majesticcup.dto.match.MatchRequestDTO;
 import org.wora.majesticcup.dto.match.MatchResponseDTO;
@@ -73,4 +74,8 @@ public interface MatchMapper {
                 statistic.getRedCards()
         );
     }
-}
+
+    @Mapping(source = "team1", target = "team1", qualifiedByName = "stringToObjectId")
+    @Mapping(source = "team2", target = "team2", qualifiedByName = "stringToObjectId")
+    @Mapping(target = "result.statistics", qualifiedByName = "mapPlayerStatistics")
+    void updateMatchFromDTO(MatchRequestDTO matchRequestDTO, @MappingTarget Match existingMatch);}

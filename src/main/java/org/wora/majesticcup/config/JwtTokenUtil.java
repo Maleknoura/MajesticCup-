@@ -69,7 +69,7 @@ public class JwtTokenUtil {
         }
     }
 
-    public Authentication getAuthentication(String token, UserDetailService userDetailsService) {
+    public Authentication getAuthentication(String token, CustomUserDetailService userDetailsService) {
         String username = getUsernameFromToken(token);
         String role = getRoleFromToken(token);
         UserDetails userDetails = userDetailsService.loadUserByUsername(username);

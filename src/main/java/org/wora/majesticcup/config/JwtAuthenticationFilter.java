@@ -4,9 +4,9 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -17,10 +17,11 @@ import java.io.IOException;
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
-    private final JwtTokenUtil jwtTokenUtil;
-    private final UserDetailService userDetailService;
+    private static final Logger logger = LoggerFactory.getLogger(JwtAuthenticationFilter.class);
 
-    public JwtAuthenticationFilter(JwtTokenUtil jwtTokenUtil,UserDetailService userDetailService){
+    private final JwtTokenUtil jwtTokenUtil;
+    private final CustomUserDetailService userDetailService;
+    public JwtAuthenticationFilter(JwtTokenUtil jwtTokenUtil,CustomUserDetailService userDetailService){
         this.jwtTokenUtil=jwtTokenUtil;
         this.userDetailService=userDetailService;
     }
@@ -36,10 +37,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                     String username = jwtTokenUtil.getUsernameFromToken(token);
                     Authentication authentication = jwtTokenUtil.getAuthentication(token, userDetailService);
                     SecurityContextHolder.getContext().setAuthentication(authentication);
-                    logger.info("Successfully authenticated user: {}");
+                    logger.info("Successfully authenticated user: {}", username);
                 }
             } catch (Exception e) {
-                logger.error("Failed to authenticate token: {}");
+                logger.error("Failed to authenticate token: {}", e.getMessage());
                 response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid or expired token");
                 return;
             }

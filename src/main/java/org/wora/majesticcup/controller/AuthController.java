@@ -1,8 +1,10 @@
 package org.wora.majesticcup.controller;
 
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.wora.majesticcup.dto.auth.LoginRequestDTO;
@@ -19,13 +21,14 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/register")
-    public ResponseEntity<String> register(UserRequestDto userRequestDto) {
+    public ResponseEntity<String> register(@RequestBody UserRequestDto userRequestDto) {
         userService.register(userRequestDto);
-        return ResponseEntity.ok("Registred Succefully");
+        return ResponseEntity.ok("Registered Successfully");
     }
 
+
     @PostMapping("/login")
-    public ResponseEntity<String> login(LoginRequestDTO loginDTO){
+    public ResponseEntity<String> login(@RequestBody @Valid LoginRequestDTO loginDTO){
         String token = authService.login(loginDTO);
         return ResponseEntity.ok(token);
     }
