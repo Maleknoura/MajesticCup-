@@ -37,7 +37,7 @@ public class UserServiceImpl implements UserService {
         AppUser newUser = new AppUser();
         newUser.setUsername(registerDTO.username());
         newUser.setPassword(passwordEncoder.encode(registerDTO.password()));
-        newUser.setRole(Role.ROLE_USER);
+        newUser.setRole(registerDTO.role());
 
         log.debug("Creating new user with username: {}", registerDTO.username());
         return userRepository.save(newUser);

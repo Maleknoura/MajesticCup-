@@ -1,6 +1,7 @@
 package org.wora.majesticcup.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.bson.types.ObjectId;
 import org.springframework.stereotype.Service;
 import org.wora.majesticcup.dto.team.TeamRequestDTO;
 import org.wora.majesticcup.dto.team.TeamResponseDTO;
@@ -9,6 +10,7 @@ import org.wora.majesticcup.mapper.TeamMapper;
 import org.wora.majesticcup.repository.TeamRepository;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -19,6 +21,13 @@ public class TeamService {
 
     public TeamResponseDTO createTeam(TeamRequestDTO teamRequestDTO) {
         Team team = teamMapper.toEntity(teamRequestDTO);
+        if (team.getPlayers() != null) {
+            team.getPlayers().forEach(player -> {
+                if (player.getId() == null || player.getId().isEmpty()) {
+                    player.setId(new ObjectId().toString());
+                }
+            });
+        }
         Team savedTeam = teamRepository.save(team);
         return teamMapper.toDto(savedTeam);
     }

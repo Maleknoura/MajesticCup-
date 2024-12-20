@@ -9,6 +9,7 @@ import org.wora.majesticcup.dto.competition.CompetitionRequestDTO;
 import org.wora.majesticcup.dto.competition.CompetitionResponseDTO;
 import org.wora.majesticcup.entity.Competition;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -21,13 +22,13 @@ public interface CompetitionMapper {
     CompetitionResponseDTO toDto(Competition entity);
 
     default List<ObjectId> convertTeamIdsToObjectIds(List<String> teamIds) {
-        return teamIds.stream()
+        return teamIds == null ? new ArrayList<>() : teamIds.stream()
                 .map(ObjectId::new)
                 .collect(Collectors.toList());
     }
 
     default List<String> convertObjectIdsToStrings(List<ObjectId> objectIds) {
-        return objectIds.stream()
+        return objectIds == null ? new ArrayList<>() : objectIds.stream()
                 .map(ObjectId::toString)
                 .collect(Collectors.toList());
     }

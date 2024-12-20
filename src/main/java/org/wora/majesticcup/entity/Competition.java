@@ -6,6 +6,7 @@ import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -18,7 +19,7 @@ public class Competition {
     private String id;
     private String name;
     private int numberOfTeams;
-    private List<ObjectId> teamIds;
+    private List<ObjectId> teamIds = new ArrayList<>();
     private int currentRound;
-    private List<ObjectId> roundIds;
+    private List<ObjectId> roundIds = new ArrayList<>();
 }

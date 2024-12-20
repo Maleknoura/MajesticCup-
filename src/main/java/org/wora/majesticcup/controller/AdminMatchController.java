@@ -1,36 +1,26 @@
 package org.wora.majesticcup.controller;
 
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.wora.majesticcup.dto.match.MatchRequestDTO;
 import org.wora.majesticcup.dto.match.MatchResponseDTO;
 import org.wora.majesticcup.service.interfaces.MatchService;
 
-import java.util.List;
-
 @RestController
-@RequestMapping("/api/matches")
+@RequestMapping("/api/admin/matches")
+@PreAuthorize("hasRole('ADMIN')")
 @RequiredArgsConstructor
-public class MatchController {
+public class AdminMatchController {
+
     private final MatchService matchService;
 
     @PostMapping
     public ResponseEntity<MatchResponseDTO> createMatch(@RequestBody MatchRequestDTO matchRequestDTO) {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(matchService.save(matchRequestDTO));
-    }
-
-    @GetMapping
-    public ResponseEntity<List<MatchResponseDTO>> getAllMatches() {
-        return ResponseEntity.ok(matchService.getAllMatchs());
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<MatchResponseDTO> getMatchById(@PathVariable String id) {
-        return ResponseEntity.ok(matchService.getMatchById(id));
     }
 
     @PutMapping("/{id}")
